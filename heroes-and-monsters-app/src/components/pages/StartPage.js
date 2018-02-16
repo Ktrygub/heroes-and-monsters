@@ -1,38 +1,78 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import {
+  Button,
+  Icon,
+  Divider,
+  Segment,
+  Header,
+  Container
+} from 'semantic-ui-react'
 
-const StartPage = ({ isFirstGame }) => (
-  <div>
-    {isFirstGame ? (
-      <div>
-        <h1 style={{ color: 'red' }}>Welcome! Your first game starts now!</h1>
-      </div>
-    ) : (
-      <div>
-        <h1 style={{ color: 'red' }}>
-          Representation of Results of previous game here. And wanna start new game?
-        </h1>
-      </div>
-    )}
+import { initGame } from '../../redux/actions/actions'
 
-    <div>
-      <br />
-      <button>
-        <Link style={{ textDecoration: 'none' }} to="/init">
-          Game Settings
-        </Link>
-      </button>
-    </div>
-  </div>
-)
+class StartPage extends React.Component {
+  onClick = () => {
+    this.props.initGame()
+    this.props.history.push('/init')
+  }
+
+  status = this.props.gameStatus
+
+  render() {
+    return (
+      <Container text style={{ marginTop: '7em' }}>
+        <div className="ui container">
+          {this.status !== 'FINISHED' ? (
+            <div>
+              <Header as="h2" color="blue" textAlign="center">
+                Welcome page will be here...
+              </Header>
+              <Segment textAlign="center" padded="very">
+                <p>first time playing</p>
+                <h1>Your first game starts now!</h1>
+                <Divider horizontal>Or</Divider>
+                <p>if finished previous game</p>
+                <h1>Results/Statistic of previous game will be here.</h1>
+                <h1>Wanna start new game?</h1>
+              </Segment>
+            </div>
+          ) : (
+            <div>
+              <Segment textAlign="center" padded="very">
+                <h1>Results/Statistic of previous game will be here.</h1>
+                <h1>Wanna start new game?</h1>
+              </Segment>
+            </div>
+          )}
+
+          <br />
+          <Segment basic textAlign="center" padded="very">
+            <Button
+              secondary
+              icon
+              size="massive"
+              labelPosition="right"
+              onClick={this.onClick}
+            >
+              New Game Settings
+              <Icon name="settings" />
+            </Button>
+          </Segment>
+        </div>
+      </Container>
+    )
+  }
+}
 StartPage.propTypes = {
-  isFirstGame: PropTypes.bool.isRequired
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+  initGame: PropTypes.func.isRequired,
+  gameStatus: PropTypes.string.isRequired
 }
 
 const mapStateToProps = state => ({
-  isFirstGame: state.game.status !== 'finished'
+  gameStatus: state.game.status || ''
 })
 
-export default connect(mapStateToProps)(StartPage)
+export default connect(mapStateToProps, { initGame })(StartPage)

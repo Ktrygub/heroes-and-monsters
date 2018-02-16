@@ -12,7 +12,7 @@ const App = () => (
     <TopNavigation />
 
     <div>
-      <BrowserRouter basename="/">
+      <BrowserRouter basename="/heroes-and-monsters">
         <Switch>
           <Route path="/" exact component={StartPage} />
           <Route path="/init" exact component={InitPage} />

@@ -1,11 +1,5 @@
 const persistedStateDatabase = {
-  // game: {
-  //   hero: {
-  //     name: 'test',
-  //     gender: 'male',
-  //     heroClass: 'frontend'
-  //   },
-  // },
+
   database: {
     heroClasses: {
       Warrior: {
